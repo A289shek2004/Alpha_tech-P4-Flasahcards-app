@@ -79,6 +79,9 @@ This app allows users to review flashcards with questions and answers. You can f
 - Simple UI / responsive layout  
 - (Future ideas) Add / edit / delete cards  
 - (Future ideas) Persist cards in local storage or backend
+<img width="1829" height="819" alt="image" src="https://github.com/user-attachments/assets/5f133bca-9464-4940-b0ce-641597a98081" />
+<img width="1327" height="592" alt="image" src="https://github.com/user-attachments/assets/aeceba3f-da56-4e0b-af5f-6bddf580270d" />
+
 
 ## 📂 Project Structure
 
