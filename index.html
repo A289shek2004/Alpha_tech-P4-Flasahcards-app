@@ -3,51 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" type="image/png" href="flashcard.png" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <title>Flashcard Study App</title>
   <link rel="stylesheet" href="style.css">
-  <title>Flashcards</title>
 </head>
 <body>
+  <div class="container">
+    <h1>Flashcard Study App</h1>
 
-  <main>
-    
-    <header>
-      <div class="container">
-        <div id="header">
-          <h1>Flashcards</h1>
-          <div>
-            <button id="show_card_box">Add Card</button>
-            <button id="delete_cards">Del Cards</button>
-          </div>
+    <!-- Flashcard Display -->
+    <div id="flashcard-container"></div>
+
+    <!-- Navigation -->
+    <div class="navigation">
+      <button id="prev-btn" class="nav-btn">⬅ Previous</button>
+      <span id="card-counter">0 / 0</span>
+      <button id="next-btn" class="nav-btn">Next ➡</button>
+    </div>
+
+    <!-- Add New Flashcard -->
+    <div class="add-card-section">
+      <h2>Add New Flashcard</h2>
+      <form id="add-card-form">
+        <div class="form-group">
+          <label for="question-input">Question</label>
+          <textarea id="question-input" placeholder="Enter your question..." required></textarea>
         </div>
-      </div>
-    </header>
-    
-    <section>
-      <div class="container">
-        <div id="create_card">
-          <h2>Create Flashcard</h2>
-          <label for="question">Question</label>
-          <textarea id="question" maxlength="280"></textarea>
-          <label for="answer" maxlength="280">Answer</label>
-          <br>
-          <textarea id="answer"></textarea>
-          <div>
-            <button id="save_card">Save</button> <button id="close_card_box">Close</button>
-          </div>
+        <div class="form-group">
+          <label for="answer-input">Answer</label>
+          <textarea id="answer-input" placeholder="Enter the answer..." required></textarea>
         </div>
-      </div>
-    </section>
+        <button type="submit" class="add-btn">Add Card</button>
+      </form>
+    </div>
+  </div>
 
-    <section>
-      <div class="container">
-        <div id="flashcards"></div>
-      </div>
-    </section>
-
-  </main>
-  
   <script src="script.js"></script>
 </body>
 </html>
