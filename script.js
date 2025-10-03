@@ -1,72 +1,84 @@
-var contentArray = localStorage.getItem('items') ? JSON.parse(localStorage.getItem('items')) : [];
+const initialFlashcards = [
+  { question: "What is JavaScript?", answer: "A programming language for interactive web pages." },
+  { question: "What does HTML stand for?", answer: "HyperText Markup Language." },
+  { question: "What is CSS used for?", answer: "For styling and layout of web pages." }
+];
 
-document.getElementById("save_card").addEventListener("click", () => {
-  addFlashcard();
-});
+let flashcards = [];
+let currentIndex = 0;
 
-document.getElementById("delete_cards").addEventListener("click", () => {
-  localStorage.clear();
-  flashcards.innerHTML = '';
-  contentArray = [];
-});
+const container = document.getElementById("flashcard-container");
+const prevBtn = document.getElementById("prev-btn");
+const nextBtn = document.getElementById("next-btn");
+const counter = document.getElementById("card-counter");
+const form = document.getElementById("add-card-form");
+const qInput = document.getElementById("question-input");
+const aInput = document.getElementById("answer-input");
 
-document.getElementById("show_card_box").addEventListener("click", () => {
-  document.getElementById("create_card").style.display = "block";
-});
-
-document.getElementById("close_card_box").addEventListener("click", () => {
-  document.getElementById("create_card").style.display = "none";
-});
-
-flashcardMaker = (text, delThisIndex) => {
-  const flashcard = document.createElement("div");
-  const question = document.createElement('h2');
-  const answer = document.createElement('h2');
-  const del = document.createElement('i');
-
-  flashcard.className = 'flashcard';
-
-  question.setAttribute("style", "border-top:1px solid red; padding: 15px; margin-top:30px");
-  question.textContent = text.my_question;
-
-  answer.setAttribute("style", "text-align:center; display:none; color:red");
-  answer.textContent = text.my_answer;
-
-  del.className = "fas fa-minus";
-  del.addEventListener("click", () => {
-    contentArray.splice(delThisIndex, 1);
-    localStorage.setItem('items', JSON.stringify(contentArray));
-    window.location.reload();
-  })
-
-  flashcard.appendChild(question);
-  flashcard.appendChild(answer);
-  flashcard.appendChild(del);
-
-  flashcard.addEventListener("click", () => {
-    if(answer.style.display == "none")
-      answer.style.display = "block";
-    else
-      answer.style.display = "none";
-  })
-
-  document.querySelector("#flashcards").appendChild(flashcard);
+function loadFlashcards() {
+  const saved = localStorage.getItem("flashcards");
+  flashcards = saved ? JSON.parse(saved) : [...initialFlashcards];
+  saveFlashcards();
 }
 
-contentArray.forEach(flashcardMaker);
+function saveFlashcards() {
+  localStorage.setItem("flashcards", JSON.stringify(flashcards));
+}
 
-addFlashcard = () => {
-  const question = document.querySelector("#question");
-  const answer = document.querySelector("#answer");
+function renderCard() {
+  container.innerHTML = "";
 
-  let flashcard_info = {
-    'my_question' : question.value,
-    'my_answer'  : answer.value
+  if (flashcards.length === 0) {
+    container.innerHTML = "<p>No flashcards. Add one below!</p>";
+    counter.textContent = "0 / 0";
+    return;
   }
 
-  contentArray.push(flashcard_info);
-  localStorage.setItem('items', JSON.stringify(contentArray));
-  flashcardMaker(contentArray[contentArray.length - 1], contentArray.length - 1);
-  question.value = "";
-  answer.value = "";
+  const card = document.createElement("div");
+  card.className = "flashcard";
+
+  card.innerHTML = `
+    <div class="flashcard-face flashcard-front">
+      <p>${flashcards[currentIndex].question}</p>
+    </div>
+    <div class="flashcard-face flashcard-back">
+      <p>${flashcards[currentIndex].answer}</p>
+    </div>
+  `;
+
+  card.addEventListener("click", () => {
+    card.classList.toggle("flipped");
+  });
+
+  container.appendChild(card);
+  counter.textContent = `${currentIndex + 1} / ${flashcards.length}`;
 }
+
+prevBtn.addEventListener("click", () => {
+  currentIndex = (currentIndex - 1 + flashcards.length) % flashcards.length;
+  renderCard();
+});
+
+nextBtn.addEventListener("click", () => {
+  currentIndex = (currentIndex + 1) % flashcards.length;
+  renderCard();
+});
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const q = qInput.value.trim();
+  const a = aInput.value.trim();
+  if (!q || !a) return;
+
+  flashcards.push({ question: q, answer: a });
+  saveFlashcards();
+
+  qInput.value = "";
+  aInput.value = "";
+
+  currentIndex = flashcards.length - 1;
+  renderCard();
+});
+
+loadFlashcards();
+renderCard();
