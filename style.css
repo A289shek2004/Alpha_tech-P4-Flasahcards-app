@@ -1,133 +1,195 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+/* General Reset */
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-*{
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body{
-  font-family: 'Nunito', sans-serif;
-  font-size: 1rem;
-  background: whitesmoke;
-}
-
-button{
-  padding: 8px;
-  outline: none;
-  cursor: pointer;
-  border: 1px solid lightgray;
-  border-radius: 5px;
-  background: whitesmoke;
-}
-
-button:hover{
-  background-color: rgba(0, 0, 0, 0.1);
-}
-
-.container{
-  width: 1280px;
-  margin: auto;
-}
-
-header{background-color: #fff;}
-
-#header{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 70px;
-  padding: 0 20px;
-  background: #fff;
-}
-
-#header button{
-  font-family: inherit;
-  border: 1px solid red;
-}
-
-#create_card{
-  display: none;
-  width: 370px;
-  margin:auto;
+/* Background */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb);
+  background-size: 400% 400%;
+  animation: bgAnimation 15s ease infinite;
+  min-height: 100vh;
   padding: 20px;
-  margin-top: 10px;
-  background: whitesmoke;
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  color: white;
 }
 
-#create_card h2{
-  color: black;
-  text-align: center;
+@keyframes bgAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-#create_card textarea{
+/* Container */
+.container {
+  max-width: 900px;
   width: 100%;
-  border-radius: 5px;
-  font-family: inherit;
-  border: 1px solid lightgray;
-  resize: none;
 }
 
-#create_card button{width: fit-content;}
+/* Title */
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 2.5rem;
+  letter-spacing: 2px;
+  text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  animation: fadeInDown 1s ease;
+}
 
-#flashcards{
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Flashcard Area */
+#flashcard-container {
+  perspective: 1200px;
+  height: 320px;
+  margin-bottom: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
-  width: 100%;
-  margin: auto;
-  margin-top: 10px;
-  padding: 0px 10px;
 }
 
-.flashcard{
-  width: 370px;
-  height: 200px;
-  word-wrap: break-word;
-  margin: 10px; 
-  background:#fff;
-  cursor: pointer;
-  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.9);
+/* Flashcard */
+.flashcard {
+  width: 420px;
+  height: 280px;
   position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.9s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+  cursor: pointer;
+  border-radius: 20px;
 }
 
-.flashcard h2{font-size: 1rem;}
+.flashcard.flipped {
+  transform: rotateY(180deg) scale(1.05);
+}
 
-.fa-minus{
-  top: 3%;
-  right: 2%;
+.flashcard-face {
   position: absolute;
-  color: #1a1a1a;
-  transition: 0.3s ease-out;
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  backface-visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 25px;
+  font-size: 1.3rem;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.2);
+  animation: cardFadeIn 1s ease;
 }
 
-.fa-minus:hover{color: red;}
-
-@media(max-width:1280px){
-  .container{width: 100%;}
+@keyframes cardFadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-@media(max-width:768px){
-  .flashcard{margin: auto;}
-
-  .flashcard{
-    margin-top: 10px;
-    margin-bottom: 10px;
-  }
+.flashcard-front {
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  font-weight: bold;
 }
 
-@media(max-width:480px){
-  #header{
-    padding: 20px;
-    gap: 10px;
-    flex-direction: column;
-    align-items: center;
-  }
+.flashcard-back {
+  background: rgba(0,0,0,0.25);
+  color: #fdfdfd;
+  transform: rotateY(180deg);
+}
 
-  #create_card{width: 95%;}
+/* Navigation */
+.navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin: 20px 0;
+}
 
-  .flashcard{width: 100%;}
+.nav-btn {
+  padding: 12px 25px;
+  font-size: 1rem;
+  background: rgba(255,255,255,0.2);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+  color: white;
+  backdrop-filter: blur(6px);
+}
 
+.nav-btn:hover {
+  transform: translateY(-3px) scale(1.05);
+  background: rgba(255,255,255,0.4);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+/* Counter */
+#card-counter {
+  font-weight: bold;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* Add Card Section */
+.add-card-section {
+  background: rgba(255,255,255,0.15);
+  color: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  backdrop-filter: blur(10px);
+}
+
+.add-card-section h2 {
+  margin-bottom: 15px;
+  font-weight: bold;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  resize: none;
+  font-size: 1rem;
+  background: rgba(255,255,255,0.2);
+  color: white;
+  backdrop-filter: blur(6px);
+}
+
+textarea::placeholder {
+  color: rgba(255,255,255,0.7);
+}
+
+textarea:focus {
+  outline: none;
+  border: 2px solid #fff;
+  background: rgba(255,255,255,0.3);
+}
+
+/* Add Button */
+.add-btn {
+  padding: 12px 20px;
+  border: none;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.4s;
+  font-weight: bold;
+}
+
+.add-btn:hover {
+  background: linear-gradient(135deg, #23a6d5, #23d5ab);
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
 }
